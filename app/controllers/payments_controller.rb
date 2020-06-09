@@ -1,7 +1,7 @@
 class PaymentsController < ApplicationController
   before_action :set_payment, only: [:show, :edit, :update, :destroy]
   protect_from_forgery except: :create
-  
+
   # GET /payments
   # GET /payments.json
   def index
@@ -25,11 +25,14 @@ class PaymentsController < ApplicationController
   # POST /payments
   # POST /payments.json
   def create
-    puts "Params ---> #{params}"
-    puts "We are now creating.... #{Time.now.to_i}"
-
+    
+    puts "We are now creating.... #{Time.now.to_i}"      
     # @payment = Payment.new(payment_params)
     @payment = Payment.new(title: "#{Time.now.to_i}")
+
+    if params[:total_price]
+      @payment.total_amount = params[:total_price].to_f
+    end
 
     respond_to do |format|
       if @payment.save
